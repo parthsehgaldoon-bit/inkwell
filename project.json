@@ -1,0 +1,21 @@
+{
+  "overview": "A personal writing app to collect blogs, notes, and diaries with a rich text editor, a built-in style checker, and optional public publishing to a shared feed.",
+  "features": [
+    "Create and edit blog, note, and diary entries with a rich text editor",
+    "Tag-based organization with search and filtering",
+    "Built-in style checker that reviews drafts for clarity and readability",
+    "Publish entries to a shared public feed readable by anyone",
+    "Private entries protected by Internet Identity sign-in"
+  ],
+  "category": "productivity",
+  "tags": [
+    "writing",
+    "blog",
+    "notes",
+    "diary",
+    "productivity",
+    "editor",
+    "publishing"
+  ],
+  "last_updated": "2026-07-27T22:03:36.461Z"
+}

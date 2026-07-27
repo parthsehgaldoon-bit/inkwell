@@ -1,0 +1,146 @@
+type Value = 
+ variant {
+   "bool": bool;
+   float: float64;
+   "int": int;
+   "nat": nat;
+   "null";
+   "text": text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserId = principal;
+type Timestamp = int;
+type StyleSuggestion = 
+ record {
+   endIndex: nat;
+   flaggedText: text;
+   rule: StyleRule;
+   startIndex: nat;
+   suggestion: text;
+ };
+type StyleRule = 
+ variant {
+   longSentence;
+   passiveVoice;
+   readability;
+   repeatedWords;
+ };
+type StyleReview = 
+ record {
+   readingTimeMinutes: nat;
+   suggestions: vec StyleSuggestion;
+   wordCount: nat;
+ };
+type SortOrder = 
+ variant {
+   newestFirst;
+   oldestFirst;
+ };
+type Result__1 = 
+ variant {
+   err: Error;
+   ok;
+ };
+type Result = 
+ record {
+   hasMore: bool;
+   rows: vec vec Cell;
+ };
+type PublishedStatus = 
+ variant {
+   draft;
+   published;
+ };
+type NewEntry = 
+ record {
+   body: text;
+   entryType: EntryType;
+   tags: vec text;
+   title: text;
+ };
+type Error = 
+ variant {
+   AmbiguousAttribute: record {
+                         field: text;
+                         sources: vec text;
+                       };
+   FrontendOriginMismatch: record {
+                             expected: vec text;
+                             got: text;
+                           };
+   FrontendOriginsNotConfigured;
+   MalformedCandid;
+   MissingField: text;
+   MixedSsoSources: record {
+                      otherKeys: vec text;
+                      ssoKeys: vec text;
+                    };
+   NoAttributes;
+   Stale: record {ageNs: nat;};
+   UnknownNonce;
+   UntrustedSsoSource: record {domain: text;};
+ };
+type EntryType = 
+ variant {
+   blog;
+   diary;
+   note;
+ };
+type EntryId = nat;
+type EntryFilter = 
+ record {
+   search: opt text;
+   statusFilter: opt PublishedStatus;
+   typeFilter: opt EntryType;
+ };
+type Entry = 
+ record {
+   author: UserId;
+   body: text;
+   createdAt: Timestamp;
+   entryType: EntryType;
+   id: EntryId;
+   publishedAt: opt Timestamp;
+   status: PublishedStatus;
+   tags: vec text;
+   title: text;
+   updatedAt: Timestamp;
+ };
+type EditEntry = 
+ record {
+   body: text;
+   entryType: EntryType;
+   tags: vec text;
+   title: text;
+ };
+type Cell = 
+ record {
+   name: text;
+   value: Value;
+ };
+service : {
+  _initialize_access_control: () -> ();
+  _internet_identity_sign_in_finish: () -> (Result__1);
+  _internet_identity_sign_in_start: () -> (blob);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  createEntry: (payload: NewEntry) -> (Entry);
+  deleteEntry: (id: EntryId) -> ();
+  editEntry: (id: EntryId, payload: EditEntry) -> (Entry);
+  execute: (qJson: text) -> (Result) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getEntry: (id: EntryId) -> (opt Entry);
+  getPublicEntry: (id: EntryId) -> (opt Entry) query;
+  isCallerAdmin: () -> (bool) query;
+  listMyEntries: (filter: EntryFilter) -> (vec Entry);
+  listPublicFeed: (search: opt text, tag: opt text, order: SortOrder) ->
+   (vec Entry) query;
+  publishEntry: (id: EntryId) -> (Entry);
+  reviewEntryStyle: (body: text) -> (StyleReview);
+  schema: () -> (text) query;
+  unpublishEntry: (id: EntryId) -> (Entry);
+}

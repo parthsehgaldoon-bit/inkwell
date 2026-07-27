@@ -1,0 +1,96 @@
+// Version: 4.0.0
+type Data__547710445<T> = {var count : Nat__93962160; elements : [var ?T]};
+type Data__552063367<K, V> = {var count : Nat__93962160; kvs : [var ?(K, V)]};
+type EntryId__144056575 = Nat;
+type EntryId__765861138 = EntryId__144056575;
+type EntryRecord__213705432 =
+  {
+    author : Principal;
+    body : Text;
+    createdAt : Int;
+    entryType : EntryType__504497449;
+    id : Nat;
+    publishedAt : ?Int;
+    status : PublishedStatus__167856833;
+    tags : [Text];
+    title : Text;
+    updatedAt : Int
+  };
+type EntryType__253494322 = {#blog; #diary; #note};
+type EntryType__504497449 = {#blog; #diary; #note};
+type Entry__630904930 =
+  {
+    author : UserId__817667034;
+    body : Text;
+    createdAt : Timestamp__391236204;
+    entryType : EntryType__253494322;
+    id : EntryId__765861138;
+    publishedAt : ?Timestamp__391236204;
+    status : PublishedStatus__752209614;
+    tags : [Text];
+    title : Text;
+    updatedAt : Timestamp__391236204
+  };
+type Internal__141955830<T> =
+  {children : [var ?Node__656343714<T>]; data : Data__547710445<T>};
+type Internal__455405067<K, V> =
+  {children : [var ?Node__279997185<K, V>]; data : Data__552063367<K, V>};
+type Leaf__114713147<K, V> = {data : Data__552063367<K, V>};
+type Leaf__384956168<T> = {data : Data__547710445<T>};
+type List__716101829<T> =
+  {
+    var blockIndex : Nat__93962160;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__93962160
+  };
+type List__852723865<T> = List__716101829<T>;
+type Map__190625089<K, V> = Map__719753394<K, V>;
+type Map__246123559<K, V> = Map__190625089<K, V>;
+type Map__719753394<K, V> =
+  {var root : Node__279997185<K, V>; var size : Nat__93962160};
+type Nat__920180692 = Nat;
+type Nat__93962160 = Nat__920180692;
+type NewActor__882126555 =
+  {
+    entries : Map__246123559<Nat, EntryRecord__213705432>;
+    entriesByAuthor : Map__246123559<Principal, Set__726347137<Nat>>;
+    nextEntryId : {var next : Nat};
+    publishedFeed : List__852723865<Nat>
+  };
+type Node__279997185<K, V> =
+  {#internal : Internal__455405067<K, V>; #leaf : Leaf__114713147<K, V>};
+type Node__656343714<T> =
+  {#internal : Internal__141955830<T>; #leaf : Leaf__384956168<T>};
+type OldActor__838338160 = {};
+type PublishedStatus__167856833 = {#draft; #published};
+type PublishedStatus__752209614 = {#draft; #published};
+type Set__557760698<T> =
+  {var root : Node__656343714<T>; var size : Nat__93962160};
+type Set__726347137<T> = Set__557760698<T>;
+type Timestamp__301639476 = Int;
+type Timestamp__391236204 = Timestamp__301639476;
+type UserId__158757552 = Principal;
+type UserId__817667034 = UserId__158757552;
+{
+  "20260727_000000" : (_old : OldActor__838338160) -> NewActor__882126555
+}
+actor  {
+  stable entries :
+    {
+      var root : Node__279997185<EntryId__144056575, Entry__630904930>;
+      var size : Nat__93962160
+    };
+  stable entriesByAuthor :
+    {
+      var root :
+        Node__279997185<UserId__158757552, Set__726347137<EntryId__144056575>>;
+      var size : Nat__93962160
+    };
+  stable nextEntryId : {var next : EntryId__144056575};
+  stable publishedFeed :
+    {
+      var blockIndex : Nat__93962160;
+      var blocks : [var [var ?EntryId__144056575]];
+      var elementIndex : Nat__93962160
+    }
+};
